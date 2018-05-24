@@ -39,20 +39,21 @@
 #include <string.h>
 #include <assert.h>
 
+#define ERROR -1
+
 #define INFTY int(1<<30)
 using namespace std;
 
 typedef long int vertex_t;
 typedef long int index_t;
 
-inline off_t fsize(const char *filename) {
-    struct stat st; 
-    if (stat(filename, &st) == 0)
-        return st.st_size;
-    return -1; 
-}
+/**
+    * @brief obtain the size of a file in bytes
+    * @param[in] "const char *filename" name of file
+    * @return file size, or -1 on error
+*/
+inline off_t fsize(const char *filename);
 
-		
 int main(int argc, char** argv){
 	int fd,i;
 	char* ss_head;
@@ -312,4 +313,16 @@ int main(int argc, char** argv){
 	//-Added by Hang
 	close(fd6);
 	//-End
+}
+
+inline off_t fsize(const char *filename) {
+    struct stat st; // return value
+
+                    // try to obtain file statistics
+    if (stat(filename, &st) == 0) {
+        // success?
+        return st.st_size;
+    } else {
+        return ERROR;
+    }
 }
